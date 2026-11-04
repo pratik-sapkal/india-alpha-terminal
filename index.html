@@ -3,186 +3,374 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#101513">
-    <meta name="description" content="Pratik Sapkal — a developer learning by building and sharing projects in public.">
-    <title>Pratik Sapkal | Developer in Progress</title>
+    <meta name="theme-color" content="#090e0c">
+    <meta name="description" content="India Alpha Terminal is an interactive, illustrative dashboard concept for exploring Indian markets. All figures are demo data, not live prices.">
+    <title>India Alpha Terminal — Market dashboard concept</title>
     <style>
       :root {
         color-scheme: dark;
-        --bg: #101513;
-        --panel: #171f1b;
-        --text: #f0f3ed;
-        --muted: #bec9c1;
-        --line: #39463f;
-        --accent: #ffd166;
-        --green: #9bd6ae;
-        --content: 1080px;
+        --bg: #090e0c;
+        --surface: #101815;
+        --surface-raised: #151f1a;
+        --surface-soft: #0c1310;
+        --line: #27342d;
+        --text: #edf4ee;
+        --muted: #a7b5ab;
+        --subtle: #829187;
+        --lime: #d3f27a;
+        --mint: #83d6aa;
+        --red: #ff8e86;
+        --amber: #f3c879;
+        --content: 1380px;
       }
 
-      * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
+      *, *::before, *::after { box-sizing: border-box; }
+      html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
       body {
         margin: 0;
-        background: var(--bg);
+        min-width: 320px;
+        background:
+          radial-gradient(ellipse at 18% -16%, rgb(85 128 91 / 15%), transparent 34rem),
+          var(--bg);
         color: var(--text);
-        font: 16px/1.65 ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+        font: 15px/1.55 ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, monospace;
       }
-      a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
-      a:hover { color: var(--text); }
-      a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
+      a { color: var(--lime); text-underline-offset: 0.22em; }
+      a:hover { color: #f1ffd0; }
+      button, input { font: inherit; }
+      button { color: inherit; }
+      :focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; }
       .skip-link {
-        position: absolute;
+        position: fixed;
         top: 0.75rem;
         left: 0.75rem;
-        z-index: 1;
-        padding: 0.65rem 0.85rem;
+        z-index: 20;
+        padding: 0.7rem 0.9rem;
         transform: translateY(-180%);
-        background: var(--accent);
+        background: var(--lime);
         color: var(--bg);
+        font-weight: 800;
       }
       .skip-link:focus { transform: translateY(0); }
-      .wrap { width: min(var(--content), calc(100% - 3rem)); margin-inline: auto; }
+      .shell { width: min(var(--content), calc(100% - 3rem)); margin-inline: auto; }
       .topbar {
+        min-height: 76px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 1rem;
-        min-height: 76px;
-        border-bottom: 1px solid var(--line);
-      }
-      .mark { color: var(--text); font-weight: 700; text-decoration: none; }
-      .mark span { color: var(--accent); }
-      nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
-      nav a { min-height: 44px; display: inline-flex; align-items: center; }
-      .hero {
-        position: relative;
-        overflow: hidden;
-        padding-block: clamp(5rem, 13vw, 9.5rem);
-        border-bottom: 1px solid var(--line);
-      }
-      .hero::after {
-        position: absolute;
-        right: -9rem;
-        bottom: -16rem;
-        width: min(45vw, 35rem);
-        aspect-ratio: 1;
-        border: 1px solid var(--line);
-        border-radius: 50%;
-        box-shadow: 0 0 0 2.5rem var(--bg), 0 0 0 calc(2.5rem + 1px) var(--line), 0 0 0 5rem var(--bg), 0 0 0 calc(5rem + 1px) var(--line);
-        content: "";
-        pointer-events: none;
-      }
-      .eyebrow { color: var(--green); font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; }
-      h1, h2, p { margin-top: 0; }
-      h1 { max-width: 760px; margin-bottom: 1.25rem; font-size: clamp(2.7rem, 8vw, 6.8rem); line-height: 0.98; letter-spacing: -0.07em; }
-      h1 span { color: var(--accent); }
-      .intro { max-width: 650px; margin-bottom: 2rem; color: var(--muted); font: 1.15rem/1.8 system-ui, sans-serif; }
-      .actions { display: flex; flex-wrap: wrap; gap: 1rem; }
-      .button {
-        display: inline-flex;
-        min-height: 48px;
-        align-items: center;
-        justify-content: center;
-        padding: 0.7rem 1rem;
-        border: 1px solid var(--accent);
-        color: var(--accent);
-        text-decoration: none;
-      }
-      .button.primary { background: var(--accent); color: var(--bg); font-weight: 700; }
-      .button:hover { background: var(--text); border-color: var(--text); color: var(--bg); }
-      section { padding-block: clamp(3.5rem, 8vw, 6rem); border-bottom: 1px solid var(--line); }
-      .section-label { margin-bottom: 0.75rem; color: var(--green); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
-      h2 { margin-bottom: 1.5rem; font-size: clamp(1.7rem, 4vw, 2.5rem); line-height: 1.15; letter-spacing: -0.04em; }
-      .about-copy { max-width: 690px; color: var(--muted); font: 1.05rem/1.85 system-ui, sans-serif; }
-      .project {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: start;
         gap: 1.5rem;
-        padding: clamp(1.25rem, 4vw, 2rem);
-        border: 1px solid var(--line);
-        background: var(--panel);
+        border-bottom: 1px solid var(--line);
       }
-      .project h3 { margin: 0 0 0.75rem; font-size: 1.2rem; }
-      .project p { max-width: 620px; margin-bottom: 1rem; color: var(--muted); font: 1rem/1.75 system-ui, sans-serif; }
-      .tag { display: inline-block; padding: 0.2rem 0.55rem; border: 1px solid var(--line); color: var(--green); font-size: 0.78rem; }
-      .project-link { min-height: 44px; display: inline-flex; align-items: center; }
-      .contact-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
-      .contact-row p { max-width: 560px; margin-bottom: 0; color: var(--muted); font: 1rem/1.75 system-ui, sans-serif; }
-      footer { padding-block: 1.5rem; color: var(--muted); font-size: 0.85rem; }
-      footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem; }
-      @media (max-width: 640px) {
-        .wrap { width: min(var(--content), calc(100% - 2rem)); }
-        .topbar { align-items: flex-start; flex-direction: column; justify-content: center; padding-block: 0.75rem; }
-        nav { gap: 1rem; }
-        .project { grid-template-columns: 1fr; }
-        .hero::after { right: -17rem; width: 30rem; opacity: 0.55; }
+      .brand { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--text); text-decoration: none; }
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        border: 1px solid #536a4c;
+        background: #182318;
+        color: var(--lime);
+        font-size: 0.8rem;
+        font-weight: 900;
+        letter-spacing: -0.08em;
+      }
+      .brand-copy { display: grid; line-height: 1.2; }
+      .brand-copy strong { font-size: 0.9rem; letter-spacing: 0.04em; }
+      .brand-copy span { margin-top: 0.24rem; color: var(--muted); font-size: 0.65rem; letter-spacing: 0.16em; }
+      .topnav { display: flex; flex-wrap: wrap; align-items: center; gap: 1.4rem; }
+      .topnav a { min-height: 44px; display: inline-flex; align-items: center; color: var(--muted); font-size: 0.82rem; text-decoration: none; }
+      .topnav a:hover, .topnav a[aria-current="location"] { color: var(--text); }
+      .top-actions { display: flex; align-items: center; gap: 0.75rem; }
+      .demo-pill, .session-pill { display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid var(--line); padding: 0.4rem 0.65rem; color: var(--amber); font-size: 0.67rem; letter-spacing: 0.09em; white-space: nowrap; }
+      .demo-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 10px rgb(243 200 121 / 45%); }
+      .hero { display: flex; align-items: end; justify-content: space-between; gap: 2rem; padding-block: clamp(2.5rem, 6vw, 4.5rem) 2rem; }
+      .eyebrow, .section-kicker { color: var(--lime); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; }
+      .eyebrow { margin: 0 0 0.8rem; }
+      h1 { margin: 0; font-size: clamp(2.2rem, 6vw, 4.2rem); line-height: 1; letter-spacing: -0.075em; }
+      .hero-copy { max-width: 700px; }
+      .hero-copy > p:last-child { max-width: 620px; margin: 1rem 0 0; color: var(--muted); font: 1rem/1.7 system-ui, sans-serif; }
+      .session-pill { color: var(--mint); }
+      .session-pill .demo-dot { background: var(--mint); box-shadow: 0 0 10px rgb(131 214 170 / 40%); }
+      .market-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 1.15rem; border: 1px solid var(--line); background: rgb(16 24 21 / 88%); }
+      .market-stat { min-width: 0; padding: 1rem 1.2rem; }
+      .market-stat + .market-stat { border-left: 1px solid var(--line); }
+      .stat-label { display: block; color: var(--muted); font-size: 0.72rem; }
+      .stat-value { display: block; margin-top: 0.3rem; font-size: clamp(1.05rem, 2vw, 1.4rem); font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: -0.04em; }
+      .stat-change { display: block; margin-top: 0.25rem; color: var(--mint); font-size: 0.72rem; }
+      .down { color: var(--red) !important; }
+      .grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.8fr); gap: 1.15rem; align-items: start; }
+      .panel { min-width: 0; border: 1px solid var(--line); background: linear-gradient(160deg, rgb(18 27 23 / 98%), rgb(13 20 17 / 98%)); }
+      .panel-head { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.2rem; border-bottom: 1px solid var(--line); }
+      .panel-title { margin: 0; font-size: 0.92rem; letter-spacing: 0.01em; }
+      .panel-subtitle { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.7rem; }
+      .chart-summary { display: flex; align-items: baseline; gap: 0.75rem; padding: 1.25rem 1.2rem 0; }
+      .chart-price { font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 700; letter-spacing: -0.06em; font-variant-numeric: tabular-nums; }
+      .chart-delta { color: var(--mint); font-size: 0.8rem; }
+      .chart-wrap { padding: 0.8rem 1rem 0.2rem; }
+      .chart { display: block; width: 100%; height: auto; overflow: visible; }
+      .chart-grid { stroke: #2a3930; stroke-width: 1; stroke-dasharray: 4 7; }
+      .chart-line { fill: none; stroke: var(--lime); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+      .chart-area { fill: url(#areaFill); }
+      .chart-dot { fill: var(--lime); stroke: #172018; stroke-width: 4; vector-effect: non-scaling-stroke; }
+      .chart-label { fill: #a7b5ab; font: 12px ui-monospace, monospace; }
+      .chart-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; padding: 0.3rem 1.2rem 1.2rem; color: var(--muted); font-size: 0.68rem; }
+      .timeframes { display: flex; gap: 0.35rem; }
+      .timeframes button, .filter-button {
+        min-width: 44px;
+        min-height: 40px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+      }
+      .timeframes button:hover, .filter-button:hover { border-color: var(--line); color: var(--text); }
+      .timeframes button[aria-pressed="true"], .filter-button[aria-pressed="true"] { border-color: #506342; background: #202c1c; color: var(--lime); }
+      .indices { display: grid; gap: 0; }
+      .index-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.2rem; }
+      .index-row + .index-row { border-top: 1px solid var(--line); }
+      .index-name { display: block; font-size: 0.82rem; font-weight: 700; }
+      .index-exchange { display: block; margin-top: 0.2rem; color: var(--muted); font-size: 0.67rem; }
+      .index-number { text-align: right; font-size: 0.84rem; font-variant-numeric: tabular-nums; }
+      .index-move { display: block; margin-top: 0.2rem; color: var(--mint); font-size: 0.68rem; }
+      .breadth { padding: 1.2rem; border-top: 1px solid var(--line); }
+      .breadth-head { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 0.65rem; font-size: 0.73rem; }
+      .breadth-head span:last-child { color: var(--muted); }
+      .breadth-bar { height: 8px; overflow: hidden; display: flex; background: var(--red); }
+      .breadth-up { width: 61%; background: var(--mint); }
+      .breadth-legend { display: flex; justify-content: space-between; gap: 1rem; margin-top: 0.55rem; color: var(--muted); font-size: 0.65rem; }
+      .section { margin-top: 1.15rem; }
+      .watchlist-head { align-items: end; }
+      .watchlist-tools { display: flex; flex-wrap: wrap; justify-content: end; gap: 0.5rem; }
+      .search-wrap { position: relative; }
+      .search-wrap label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      .search-wrap input { width: min(230px, 48vw); min-height: 42px; border: 1px solid var(--line); border-radius: 0; padding: 0.55rem 0.75rem; background: var(--surface-soft); color: var(--text); }
+      .search-wrap input::placeholder { color: var(--muted); }
+      .table-scroll { overflow-x: auto; }
+      table { width: 100%; border-collapse: collapse; text-align: left; font-variant-numeric: tabular-nums; }
+      th, td { padding: 0.85rem 1.2rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+      th { color: var(--muted); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; }
+      td { font-size: 0.77rem; }
+      tbody tr:last-child td { border-bottom: 0; }
+      tbody tr:hover { background: rgb(211 242 122 / 4%); }
+      .symbol-button { min-height: 40px; border: 0; padding: 0; background: transparent; color: var(--text); cursor: pointer; font-weight: 700; text-align: left; }
+      .company { display: block; color: var(--muted); font-size: 0.67rem; font-weight: 400; }
+      .volume { color: var(--muted); }
+      .disclaimer { margin: 1.15rem 0 0; padding: 1rem 1.2rem; border-left: 3px solid var(--amber); background: #19170f; color: #e6d9bb; font: 0.8rem/1.65 system-ui, sans-serif; }
+      .footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-top: 2.5rem; padding-block: 1.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.7rem; }
+      .footer a { color: var(--muted); }
+      [hidden] { display: none !important; }
+      @media (max-width: 940px) {
+        .grid { grid-template-columns: minmax(0, 1fr); }
+        .market-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .market-stat:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
+        .market-stat:nth-child(4) { border-top: 1px solid var(--line); }
+      }
+      @media (max-width: 620px) {
+        .shell { width: min(var(--content), calc(100% - 1.5rem)); }
+        .topbar { flex-wrap: wrap; justify-content: space-between; padding-block: 0.75rem; }
+        .topnav { order: 3; width: 100%; gap: 1.25rem; border-top: 1px solid var(--line); }
+        .topnav a { min-height: 42px; }
+        .demo-pill { font-size: 0.6rem; }
+        .hero { align-items: start; flex-direction: column; gap: 1.2rem; }
+        .market-stat { padding: 0.85rem; }
+        .panel-head { align-items: start; flex-direction: column; }
+        .watchlist-head { align-items: start; }
+        .watchlist-tools { width: 100%; justify-content: start; }
+        th, td { padding-inline: 0.85rem; }
+        .table-scroll { margin-inline: -0.1rem; }
       }
       @media (prefers-reduced-motion: reduce) {
-        html { scroll-behavior: auto; }
+        *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
       }
     </style>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <header class="wrap topbar">
-      <a class="mark" href="#top" aria-label="Pratik Sapkal home"><span>PS</span> / BUILD LOG</a>
-      <nav aria-label="Main navigation">
-        <a href="#about">About</a>
-        <a href="#work">Work</a>
-        <a href="#contact">Contact</a>
+    <header class="shell topbar">
+      <a class="brand" href="#top" aria-label="India Alpha Terminal home">
+        <span class="brand-mark" aria-hidden="true">IA</span>
+        <span class="brand-copy"><strong>INDIA ALPHA</strong><span>MARKET TERMINAL</span></span>
+      </a>
+      <nav class="topnav" aria-label="Main navigation">
+        <a href="#overview" aria-current="location">Overview</a>
+        <a href="#markets">Markets</a>
+        <a href="#watchlist">Watchlist</a>
       </nav>
+      <div class="top-actions"><span class="demo-pill"><span class="demo-dot" aria-hidden="true"></span>SIMULATED DATA</span></div>
     </header>
 
-    <main id="main-content">
-      <div class="wrap">
-        <section class="hero" id="top" aria-labelledby="page-title">
-          <p class="eyebrow">A developer in progress · Building in public</p>
-          <h1 id="page-title">Hi, I’m<br><span>Pratik Sapkal.</span></h1>
-          <p class="intro">I’m learning to build software by making real projects, staying curious, and improving one version at a time.</p>
-          <div class="actions">
-            <a class="button primary" href="#work">Explore my work</a>
-            <a class="button" href="https://github.com/pratik-sapkal">Visit my GitHub</a>
-          </div>
-        </section>
+    <main id="main-content" class="shell">
+      <section class="hero" id="top" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">INDIA · MARKET OVERVIEW · CONCEPT</p>
+          <h1 id="page-title">Signal over noise.</h1>
+          <p>A focused look at the Indian market landscape. Explore the dashboard and watchlist using illustrative sample data.</p>
+        </div>
+        <span class="session-pill"><span class="demo-dot" aria-hidden="true"></span>DEMO SESSION</span>
+      </section>
 
-        <section id="about" aria-labelledby="about-title">
-          <p class="section-label">01 / About</p>
-          <h2 id="about-title">Learning by doing.</h2>
-          <p class="about-copy">I’m a new developer exploring how ideas become software. This page is my small corner of the internet to share what I’m building and the progress I make along the way.</p>
-        </section>
+      <section id="overview" aria-label="Market summary">
+        <div class="market-strip">
+          <article class="market-stat"><span class="stat-label">NIFTY 50</span><strong class="stat-value">24,816.30</strong><span class="stat-change">+0.72% · DEMO</span></article>
+          <article class="market-stat"><span class="stat-label">SENSEX</span><strong class="stat-value">81,542.10</strong><span class="stat-change">+0.58% · DEMO</span></article>
+          <article class="market-stat"><span class="stat-label">BANK NIFTY</span><strong class="stat-value">53,210.45</strong><span class="stat-change down">−0.14% · DEMO</span></article>
+          <article class="market-stat"><span class="stat-label">INDIA VIX</span><strong class="stat-value">14.28</strong><span class="stat-change down">−2.31% · DEMO</span></article>
+        </div>
+      </section>
 
-        <section id="work" aria-labelledby="work-title">
-          <p class="section-label">02 / Selected work</p>
-          <h2 id="work-title">A first project, out in the open.</h2>
-          <article class="project">
-            <div>
-              <h3>India Alpha Terminal</h3>
-              <p>An early-stage public project. I’m using it as a place to learn, experiment, and share more as the work takes shape.</p>
-              <span class="tag">Learning in public</span>
+      <div class="grid" id="markets">
+        <section class="panel" aria-labelledby="chart-title">
+          <div class="panel-head">
+            <div><h2 class="panel-title" id="chart-title">NIFTY 50 <span id="chart-symbol">· INDEX</span></h2><p class="panel-subtitle" id="chart-period">Illustrative movement · not market data</p></div>
+            <div class="timeframes" role="group" aria-label="Illustrative chart range">
+              <button type="button" data-range="1D" aria-pressed="true">1D</button>
+              <button type="button" data-range="1W" aria-pressed="false">1W</button>
+              <button type="button" data-range="1M" aria-pressed="false">1M</button>
+              <button type="button" data-range="1Y" aria-pressed="false">1Y</button>
             </div>
-            <a class="project-link" href="https://github.com/pratik-sapkal/india-alpha-terminal">View the GitHub repository</a>
-          </article>
+          </div>
+          <div class="chart-summary"><span class="chart-price" id="chart-price">24,816.30</span><span class="chart-delta" id="chart-delta">+0.72% · demo</span></div>
+          <div class="chart-wrap">
+            <svg class="chart" viewBox="0 0 800 260" role="img" aria-labelledby="chart-visual-title chart-visual-desc">
+              <title id="chart-visual-title">Illustrative NIFTY 50 line chart</title>
+              <desc id="chart-visual-desc">A sample line chart for demonstration only. It does not show real market prices.</desc>
+              <defs><linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#d3f27a" stop-opacity="0.2"></stop><stop offset="100%" stop-color="#d3f27a" stop-opacity="0"></stop></linearGradient></defs>
+              <line class="chart-grid" x1="52" y1="35" x2="780" y2="35"></line>
+              <line class="chart-grid" x1="52" y1="95" x2="780" y2="95"></line>
+              <line class="chart-grid" x1="52" y1="155" x2="780" y2="155"></line>
+              <line class="chart-grid" x1="52" y1="215" x2="780" y2="215"></line>
+              <text class="chart-label" x="0" y="39">25.0k</text><text class="chart-label" x="0" y="99">24.8k</text><text class="chart-label" x="0" y="159">24.6k</text><text class="chart-label" x="0" y="219">24.4k</text>
+              <path class="chart-area" id="chart-area" d="M52 177 L118 163 L184 171 L250 135 L316 147 L382 110 L448 126 L514 92 L580 105 L646 68 L712 83 L778 48 L778 230 L52 230 Z"></path>
+              <path class="chart-line" id="chart-line" d="M52 177 L118 163 L184 171 L250 135 L316 147 L382 110 L448 126 L514 92 L580 105 L646 68 L712 83 L778 48"></path>
+              <circle class="chart-dot" id="chart-dot" cx="778" cy="48" r="6"></circle>
+              <text class="chart-label" x="52" y="250">OPEN</text><text class="chart-label" x="742" y="250">CLOSE</text>
+            </svg>
+          </div>
+          <div class="chart-caption"><span>Illustrative visualization · values are fictional</span><span id="range-caption">Sample range: 1 day</span></div>
         </section>
 
-        <section id="contact" aria-labelledby="contact-title">
-          <p class="section-label">03 / Say hello</p>
-          <div class="contact-row">
-            <div>
-              <h2 id="contact-title">Open to learning together.</h2>
-              <p>Follow my work or reach out through GitHub. I’m always glad to learn from thoughtful feedback.</p>
-            </div>
-            <a class="button primary" href="https://github.com/pratik-sapkal">Connect on GitHub</a>
+        <aside class="panel" aria-labelledby="pulse-title">
+          <div class="panel-head"><div><h2 class="panel-title" id="pulse-title">Market pulse</h2><p class="panel-subtitle">Illustrative breadth snapshot</p></div></div>
+          <div class="indices">
+            <div class="index-row"><div><span class="index-name">NIFTY MIDCAP 100</span><span class="index-exchange">NSE · DEMO</span></div><div class="index-number">58,420.80<span class="index-move">+0.43%</span></div></div>
+            <div class="index-row"><div><span class="index-name">NIFTY IT</span><span class="index-exchange">NSE · DEMO</span></div><div class="index-number">38,215.60<span class="index-move down">−0.21%</span></div></div>
+            <div class="index-row"><div><span class="index-name">NIFTY AUTO</span><span class="index-exchange">NSE · DEMO</span></div><div class="index-number">25,640.15<span class="index-move">+0.86%</span></div></div>
           </div>
-        </section>
+          <div class="breadth">
+            <div class="breadth-head"><strong>Illustrative breadth</strong><span>DEMO</span></div>
+            <div class="breadth-bar" role="img" aria-label="Illustrative market breadth: 61 percent advancing, 39 percent declining"><span class="breadth-up"></span></div>
+            <div class="breadth-legend"><span>Advancing 61%</span><span>Declining 39%</span></div>
+          </div>
+        </aside>
       </div>
+
+      <section class="panel section" id="watchlist" aria-labelledby="watchlist-title">
+        <div class="panel-head watchlist-head">
+          <div><h2 class="panel-title" id="watchlist-title">Market watch</h2><p class="panel-subtitle">Example symbols · sample values only</p></div>
+          <div class="watchlist-tools">
+            <div class="timeframes" role="group" aria-label="Filter watchlist by market move">
+              <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
+              <button class="filter-button" type="button" data-filter="up" aria-pressed="false">Up</button>
+              <button class="filter-button" type="button" data-filter="down" aria-pressed="false">Down</button>
+            </div>
+            <div class="search-wrap"><label for="watch-search">Search symbols or companies</label><input id="watch-search" type="search" placeholder="Search watchlist" autocomplete="off"></div>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <caption class="visually-hidden">Illustrative watchlist sample. Prices and changes are fictional and not live quotes.</caption>
+            <thead><tr><th scope="col">Instrument</th><th scope="col">Last price</th><th scope="col">Change</th><th scope="col">Volume</th><th scope="col">Market</th></tr></thead>
+            <tbody id="watchlist-body">
+              <tr data-direction="up"><td><button class="symbol-button" type="button" data-symbol="RELIANCE" data-price="1,462.80" data-delta="+0.64%">RELIANCE<span class="company">Reliance Industries</span></button></td><td>1,462.80</td><td class="stat-change">+0.64%</td><td class="volume">3.42M</td><td>NSE · DEMO</td></tr>
+              <tr data-direction="up"><td><button class="symbol-button" type="button" data-symbol="TCS" data-price="3,284.50" data-delta="+0.18%">TCS<span class="company">Tata Consultancy Services</span></button></td><td>3,284.50</td><td class="stat-change">+0.18%</td><td class="volume">1.08M</td><td>NSE · DEMO</td></tr>
+              <tr data-direction="down"><td><button class="symbol-button" type="button" data-symbol="HDFCBANK" data-price="1,684.20" data-delta="−0.32%">HDFCBANK<span class="company">HDFC Bank</span></button></td><td>1,684.20</td><td class="stat-change down">−0.32%</td><td class="volume">2.76M</td><td>NSE · DEMO</td></tr>
+              <tr data-direction="up"><td><button class="symbol-button" type="button" data-symbol="INFY" data-price="1,522.10" data-delta="+0.91%">INFY<span class="company">Infosys</span></button></td><td>1,522.10</td><td class="stat-change">+0.91%</td><td class="volume">4.11M</td><td>NSE · DEMO</td></tr>
+              <tr data-direction="down"><td><button class="symbol-button" type="button" data-symbol="ICICIBANK" data-price="1,192.65" data-delta="−0.07%">ICICIBANK<span class="company">ICICI Bank</span></button></td><td>1,192.65</td><td class="stat-change down">−0.07%</td><td class="volume">2.19M</td><td>NSE · DEMO</td></tr>
+              <tr data-direction="up"><td><button class="symbol-button" type="button" data-symbol="ITC" data-price="438.25" data-delta="+0.36%">ITC<span class="company">ITC Limited</span></button></td><td>438.25</td><td class="stat-change">+0.36%</td><td class="volume">5.63M</td><td>NSE · DEMO</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="disclaimer"><strong>Prototype notice:</strong> This is a design and learning demo. All displayed prices, percentages, volumes, charts, and breadth figures are fictional examples—not live data, investment research, or financial advice.</p>
+      </section>
+
+      <footer class="footer"><span>INDIA ALPHA TERMINAL · A learning project by Pratik Sapkal</span><span><a href="https://github.com/pratik-sapkal/india-alpha-terminal">Source on GitHub</a> · <a href="https://github.com/pratik-sapkal">Profile</a></span></footer>
     </main>
 
-    <footer>
-      <div class="wrap">
-        <span>Pratik Sapkal · Built with curiosity.</span>
-        <a href="https://github.com/pratik-sapkal">GitHub profile</a>
-      </div>
-    </footer>
+    <style>.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }</style>
+    <script>
+      const ranges = {
+        "1D": { caption: "1 day", line: "M52 177 L118 163 L184 171 L250 135 L316 147 L382 110 L448 126 L514 92 L580 105 L646 68 L712 83 L778 48", delta: "+0.72% · demo" },
+        "1W": { caption: "1 week", line: "M52 195 L118 178 L184 186 L250 144 L316 157 L382 132 L448 146 L514 102 L580 118 L646 91 L712 74 L778 56", delta: "+1.14% · demo" },
+        "1M": { caption: "1 month", line: "M52 205 L118 192 L184 166 L250 178 L316 145 L382 154 L448 118 L514 133 L580 96 L646 105 L712 74 L778 52", delta: "+2.06% · demo" },
+        "1Y": { caption: "1 year", line: "M52 210 L118 193 L184 199 L250 165 L316 178 L382 145 L448 151 L514 119 L580 132 L646 88 L712 96 L778 50", delta: "+6.38% · demo" }
+      };
+      const line = document.getElementById("chart-line");
+      const area = document.getElementById("chart-area");
+      const dot = document.getElementById("chart-dot");
+      const chartTitle = document.getElementById("chart-visual-title");
+      const chartDesc = document.getElementById("chart-visual-desc");
+      const rangeCaption = document.getElementById("range-caption");
+      const chartPeriod = document.getElementById("chart-period");
+      const chartPrice = document.getElementById("chart-price");
+      const chartDelta = document.getElementById("chart-delta");
+      const symbolLabel = document.getElementById("chart-symbol");
+      let selectedPrice = "24,816.30";
+      let selectedSymbol = "NIFTY 50";
+
+      function updateChartPath(path) {
+        line.setAttribute("d", path);
+        area.setAttribute("d", path + " L778 230 L52 230 Z");
+        const lastPoint = path.trim().split(" ").at(-1).replace("L", "").split(" ");
+        dot.setAttribute("cx", lastPoint[0]);
+        dot.setAttribute("cy", lastPoint[1]);
+      }
+
+      document.querySelectorAll("[data-range]").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll("[data-range]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+          const range = ranges[button.dataset.range];
+          updateChartPath(range.line);
+          chartPeriod.textContent = "Illustrative movement · not market data";
+          rangeCaption.textContent = "Sample range: " + range.caption;
+          chartPrice.textContent = selectedPrice;
+          chartDelta.textContent = range.delta;
+          chartTitle.textContent = "Illustrative " + selectedSymbol + " line chart";
+          chartDesc.textContent = "Illustrative " + selectedSymbol + " line chart over " + range.caption + ". Sample values only; not real market prices.";
+        });
+      });
+
+      document.querySelectorAll("[data-filter]").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll("[data-filter]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+          filterRows();
+        });
+      });
+
+      const search = document.getElementById("watch-search");
+      search.addEventListener("input", filterRows);
+      function filterRows() {
+        const activeFilter = document.querySelector('[data-filter][aria-pressed="true"]').dataset.filter;
+        const query = search.value.trim().toLowerCase();
+        document.querySelectorAll("#watchlist-body tr").forEach((row) => {
+          const matchesDirection = activeFilter === "all" || row.dataset.direction === activeFilter;
+          const matchesText = row.textContent.toLowerCase().includes(query);
+          row.hidden = !(matchesDirection && matchesText);
+        });
+      }
+
+      document.querySelectorAll("[data-symbol]").forEach((button) => {
+        button.addEventListener("click", () => {
+          selectedSymbol = button.dataset.symbol;
+          selectedPrice = button.dataset.price;
+          symbolLabel.textContent = "· " + selectedSymbol;
+          chartPrice.textContent = selectedPrice;
+          chartDelta.textContent = button.dataset.delta + " · demo";
+          chartTitle.textContent = "Illustrative " + selectedSymbol + " line chart";
+          chartDesc.textContent = "Illustrative " + selectedSymbol + " line chart. Sample values only; not real market prices.";
+          document.querySelector("[data-range][aria-pressed='true']").click();
+          document.getElementById("chart-title").scrollIntoView({ block: "nearest", behavior: "smooth" });
+        });
+      });
+    </script>
   </body>
 </html>
